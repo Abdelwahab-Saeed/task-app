@@ -6,8 +6,129 @@
     <title>Admin Dashboard - TaskFlow</title>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/darkmode.js'])
 </head>
-<body x-data="{}" class="h-full" style="background-color: #0F1117;">
-    <div class="flex h-full">
+<body class="h-full" style="background-color: #0F1117;">
+    <div class="flex h-full" x-data="{ sidebarOpen: false }">
+        <!-- Mobile Sidebar -->
+        <div x-show="sidebarOpen" 
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-40 md:hidden" 
+             role="dialog" 
+             aria-modal="true"
+             x-cloak>
+            
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75" @click="sidebarOpen = false"></div>
+
+            <div x-show="sidebarOpen"
+                 x-transition:enter="transition ease-in-out duration-300 transform"
+                 x-transition:enter-start="-translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="transition ease-in-out duration-300 transform"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="-translate-x-full"
+                 class="relative flex flex-col w-full max-w-xs h-full" 
+                 style="background-color: #0A0D12;">
+                
+                <div class="absolute top-0 right-0 -mr-12 pt-4">
+                    <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="sidebarOpen = false">
+                        <span class="sr-only">Close sidebar</span>
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Reusing Desktop Sidebar Content for Mobile -->
+                <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: #3FA9A6;">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-semibold text-white">TaskFlow</h1>
+                        <p class="text-xs text-slate-400">Project Management</p>
+                    </div>
+                </div>
+
+                <nav class="flex-1 px-4 mt-6 space-y-1 overflow-y-auto">
+                    {{-- Exactly the same navigation as desktop --}}
+                    <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.dashboard')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="{{ route('admin.users.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.users.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.users.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        Users
+                    </a>
+                    <a href="{{ route('admin.tasks.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.tasks.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.tasks.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        Tasks
+                    </a>
+                    <a href="{{ route('admin.notes.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.notes.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.notes.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Notes
+                    </a>
+                    <a href="{{ route('admin.meetings.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.meetings.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.meetings.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Meetings
+                    </a>
+                    <a href="{{ route('admin.trash.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.trash.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.trash.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Trash
+                    </a>
+
+                    <div class="pt-6">
+                        <div class="flex items-center justify-between px-3 mb-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Projects</span>
+                        </div>
+                        <a href="{{ route('admin.projects.index') }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+                                <span class="text-sm">All Projects</span>
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+
+                <div class="flex-shrink-0 border-t border-slate-800 p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold text-sm" style="background: linear-gradient(to bottom right, #5eeee5, #3fa9a6);">
+                                {{ substr(auth()->user()->name, 0, 1) }}
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-white truncate">{{ auth()->user()->name }}</p>
+                        </div>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="p-2 text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Sidebar -->
         <div class="hidden md:flex md:w-64 md:flex-col">
             <div class="flex flex-col flex-grow border-r" style="background-color: #0A0D12; border-color: #1A1D24;">
@@ -111,15 +232,21 @@
         <div class="flex flex-col flex-1 overflow-hidden">
             <!-- Top bar -->
             <div class="relative z-10 flex-shrink-0 flex h-16 border-b" style="background-color: #0F1117; border-color: #1A1D24;">
-                <div class="flex-1 px-6 flex justify-between items-center">
+                <div class="flex-1 px-4 sm:px-6 flex justify-between items-center">
+                    <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-400 hover:text-white md:hidden transition-colors">
+                        <span class="sr-only">Open sidebar</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
                     <div class="flex-1"></div>
-                    <div class="ml-4 flex items-center gap-3">
+                    <!-- <div class="ml-4 flex items-center gap-3">
                         <button id="darkModeToggle" class="p-2 text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                             </svg>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -214,7 +341,7 @@
         </div>
     </div>
 
-    <script src="//unpkg.com/alpinejs" defer></script>
+
     <style>
         [x-cloak] { display: none !important; }
     </style>

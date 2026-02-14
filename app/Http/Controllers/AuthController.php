@@ -9,10 +9,6 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        if (auth()->check()) {
-            return $this->redirectBasedOnRole();
-        }
-
         return view('auth.login');
     }
 

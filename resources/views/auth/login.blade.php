@@ -105,7 +105,7 @@
             {{-- Submit --}}
             <button 
                 type="submit"
-                class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5"
+                class="w-full cursor-pointer bg-white hover:bg-primary-700 text-stroke-200 font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-0.5"
             >
                 Sign In
             </button>
