@@ -97,6 +97,11 @@
                     <div class="pt-6">
                         <div class="flex items-center justify-between px-3 mb-2">
                             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Projects</span>
+                            <a href="{{ route('admin.projects.create') }}" class="text-slate-500 hover:text-primary-400 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </a>
                         </div>
                         <a href="{{ route('admin.projects.index') }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
                             <div class="flex items-center gap-3">
@@ -105,9 +110,9 @@
                             </div>
                         </a>
                         @foreach($sidebarProjects as $project)
-                            <a href="{{ route('admin.projects.show', $project) }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
+                            <a href="{{ route('admin.projects.show', $project) }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm {{ request()->is('admin/projects/'.$project->id) ? 'text-white bg-dark-hover' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }} rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-purple-500/50 group-hover:bg-purple-500 transition-colors"></div>
+                                    <div class="w-2 h-2 rounded-full {{ request()->is('admin/projects/'.$project->id) ? 'bg-purple-500' : 'bg-purple-500/50 group-hover:bg-purple-500' }} transition-colors"></div>
                                     <span class="text-sm truncate">{{ $project->name }}</span>
                                 </div>
                                 @if($project->tasks_count > 0)
@@ -118,6 +123,34 @@
                             </a>
                         @endforeach
                     </div>
+
+                    <!-- Team Section -->
+                    <div class="pt-6">
+                        <div class="flex items-center justify-between px-3 mb-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Team</span>
+                            <a href="{{ route('admin.users.create') }}" class="text-slate-500 hover:text-primary-400 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        @foreach($sidebarUsers as $user)
+                            <a href="{{ route('admin.users.show', $user) }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm {{ request()->is('admin/users/'.$user->id) ? 'text-white bg-dark-hover' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }} rounded-lg transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <!-- <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors" style="background: linear-gradient(to bottom right, #5eeee5, #3fa9a6);">
+                                        {{ substr($user->name, 0, 1) }}
+                                    </div> -->
+                                    <span class="text-sm truncate">{{ $user->name }}</span>
+                                </div>
+                                @if($user->tasks_count > 0)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-400 group-hover:text-white transition-colors">
+                                        {{ $user->tasks_count }}
+                                    </span>
+                                @endif
+                            </a>
+                        @endforeach
+                    </div>
+
                 </nav>
 
                 <div class="flex-shrink-0 border-t border-slate-800 p-4">
@@ -224,6 +257,35 @@
                                     @if($project->tasks_count > 0)
                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-400 group-hover:text-white transition-colors">
                                             {{ $project->tasks_count }}
+                                        </span>
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Team Section -->
+                    <div class="pt-6 pb-4">
+                        <div class="flex items-center justify-between px-3 mb-2">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Team</span>
+                            <a href="{{ route('admin.users.create') }}" class="text-slate-500 hover:text-primary-400 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="space-y-1">
+                            @foreach($sidebarUsers as $user)
+                                <a href="{{ route('admin.users.show', $user) }}" class="group flex items-center justify-between gap-3 px-3 py-2 text-sm {{ request()->routeIs('admin.users.show') && request()->route('user')->id == $user->id ? 'text-white bg-dark-hover' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }} rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <!-- <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors" style="background: linear-gradient(to bottom right, #5eeee5, #3fa9a6);">
+                                            {{ substr($user->name, 0, 2) }}
+                                        </div> -->
+                                        <span class="text-sm truncate">{{ $user->name }}</span>
+                                    </div>
+                                    @if($user->tasks_count > 0)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-400 group-hover:text-white transition-colors">
+                                            {{ $user->tasks_count }}
                                         </span>
                                     @endif
                                 </a>
