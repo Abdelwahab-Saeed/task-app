@@ -20,5 +20,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Pagination\Paginator::useTailwind();
+
+        \Illuminate\Support\Facades\View::composer(
+            'layouts.admin', \App\Http\ViewComposers\AdminSidebarComposer::class
+        );
     }
+
 }
