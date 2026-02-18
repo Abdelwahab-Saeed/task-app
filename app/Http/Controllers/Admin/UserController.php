@@ -51,6 +51,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load('tasks');
         return view('admin.users.show', compact('user'));
     }
 

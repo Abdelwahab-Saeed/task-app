@@ -78,6 +78,51 @@
             </div>
         </div>
 
+        <!-- Tasks Section -->
+        <div class="mt-8 rounded-2xl shadow-2xl overflow-hidden" style="background-color: #22252E; border: 1px solid #2A2D36;">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        Assigned Tasks
+                    </h3>
+                    @if($user->tasks->count() > 0)
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Tasks: {{ $user->tasks->count() }}</span>
+                    @endif
+                </div>
+
+                @if($user->tasks->count() > 0)
+                    <div class="space-y-3">
+                        @foreach($user->tasks->take(10) as $task)
+                            <a href="{{ route('admin.tasks.show', $task) }}" class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-[#1A1D24] border border-transparent hover:border-[#2A2D36]">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
+                                    <span class="text-slate-200 font-medium group-hover:text-white transition-colors">{{ $task->title }}</span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-xs font-bold uppercase tracking-widest {{ $task->status === 'completed' ? 'text-green-500/70' : 'text-slate-500' }}">
+                                        {{ str_replace('_', ' ', $task->status) }}
+                                    </span>
+                                    <svg class="w-4 h-4 text-slate-600 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-12 rounded-2xl border-2 border-dashed border-[#2A2D36] bg-[#1A1D24]/50">
+                        <svg class="w-12 h-12 text-slate-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2 2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-3.586a1 1 0 00-.707.293l-1.414 1.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-1.414-1.414A1 1 0 009.586 13H4"></path>
+                        </svg>
+                        <p class="text-slate-500 font-medium">No tasks assigned to this user yet.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
         @if($user->id !== auth()->id())
             <!-- Danger Zone (Delete) -->
             <div class="mt-8 flex justify-end">
