@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Meeting extends Model
+class Contact extends Model
 {
     use SoftDeletes;
-    protected $fillable = [
-        'title',
-        'agenda',
-        'scheduled_at',
-        'notes',
-    ];
 
-    protected $casts = [
-        'scheduled_at' => 'datetime',
+    protected $fillable = [
+        'company_name',
+        'contact_person',
+        'phone',
+        'email',
+        'notes',
     ];
 }

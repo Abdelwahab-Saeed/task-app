@@ -4,15 +4,15 @@
 <div class="space-y-6">
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
-            <h1 class="text-2xl font-semibold text-white">Meetings</h1>
-            <p class="mt-1 text-sm text-slate-400">Manage all meetings</p>
+            <h1 class="text-2xl font-semibold text-white">Contacts</h1>
+            <p class="mt-1 text-sm text-slate-400">Manage your business contacts</p>
         </div>
         <div class="mt-4 sm:mt-0">
-            <a href="{{ route('admin.meetings.create') }}" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm" style="background-color: #3FA9A6;">
+            <a href="{{ route('admin.contacts.create') }}" class="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm" style="background-color: #3FA9A6;">
                 <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                 </svg>
-                New Meeting
+                New Contact
             </a>
         </div>
     </div>
@@ -22,29 +22,37 @@
             <table class="min-w-full" style="border-top: 1px solid #2A2D36;">
                 <thead style="background-color: #1A1D24;">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Title</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Scheduled</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Company</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Contact Person</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Phone</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
                         <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
                     </tr>
                 </thead>
                 <tbody style="background-color: #22252E;">
-                    @forelse($meetings as $meeting)
+                    @forelse($contacts as $contact)
                         <tr class="hover:bg-opacity-50" style="border-bottom: 1px solid #2A2D36;">
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-white cursor-pointer hover:text-primary-400 transition-colors"
                                      @click="$dispatch('open-edit-modal', { 
-                                         url: '{{ route('admin.meetings.edit', $meeting) }}',
-                                         title: 'Edit Meeting: {{ $meeting->title }}'
+                                         url: '{{ route('admin.contacts.edit', $contact) }}',
+                                         title: 'Edit Contact: {{ $contact->company_name }}'
                                      })">
-                                    {{ $meeting->title }}
+                                    {{ $contact->company_name }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-slate-300">{{ $meeting->scheduled_at->format('M d, Y g:i A') }}</div>
+                                <div class="text-sm text-slate-300">{{ $contact->contact_person ?? 'N/A' }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-slate-400">{{ $contact->phone }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-slate-300">{{ $contact->email ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.meetings.show', $meeting) }}" class="p-2 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors" title="View">
+                                    <a href="{{ route('admin.contacts.show', $contact) }}" class="p-2 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors" title="View">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -52,8 +60,8 @@
                                     </a>
                                     <button type="button" 
                                             @click="$dispatch('open-edit-modal', { 
-                                                url: '{{ route('admin.meetings.edit', $meeting) }}',
-                                                title: 'Edit Meeting: {{ $meeting->title }}'
+                                                url: '{{ route('admin.contacts.edit', $contact) }}',
+                                                title: 'Edit Contact: {{ $contact->company_name }}'
                                             })"
                                             class="p-2 text-primary-400 hover:text-primary-300 hover:bg-primary-400/10 rounded-lg transition-colors" style="background-color: #3FA9A6;" title="Edit">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,9 +70,9 @@
                                     </button>
                                     <button type="button" 
                                             @click="$dispatch('open-delete-modal', { 
-                                                action: '{{ route('admin.meetings.destroy', $meeting) }}',
-                                                title: 'Delete Meeting',
-                                                message: 'Are you sure you want to delete meeting \'{{ $meeting->title }}\'?'
+                                                action: '{{ route('admin.contacts.destroy', $contact) }}',
+                                                title: 'Delete Contact',
+                                                message: 'Are you sure you want to delete contact \'{{ $contact->company_name }}\'?'
                                             })"
                                             class="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,17 +84,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">No meetings found</td>
+                            <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">No contacts found</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-
-        @if($meetings->hasPages())
+        @if($contacts->hasPages())
             <div class="px-6 py-4 border-t border-[#2A2D36]">
-                {{ $meetings->links() }}
+                {{ $contacts->links() }}
             </div>
         @endif
     </div>

@@ -13,8 +13,7 @@ class MeetingController extends Controller
         $query = Meeting::query();
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('company_name', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
         $meetings = $query->orderBy('scheduled_at', 'desc')->paginate(5);
@@ -33,10 +32,6 @@ class MeetingController extends Controller
             'title' => 'required|string|max:255',
             'agenda' => 'required|string',
             'scheduled_at' => 'required|date|after:now',
-            'contact_person' => 'nullable|string|max:255',
-            'company_name' => 'nullable|string|max:255',
-            'contact_phone' => 'nullable|string|max:20',
-            'contact_email' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ]);
 
@@ -61,10 +56,6 @@ class MeetingController extends Controller
             'title' => 'required|string|max:255',
             'agenda' => 'required|string',
             'scheduled_at' => 'required|date|after:now',
-            'contact_person' => 'nullable|string|max:255',
-            'company_name' => 'nullable|string|max:255',
-            'contact_phone' => 'nullable|string|max:20',
-            'contact_email' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ]);
 

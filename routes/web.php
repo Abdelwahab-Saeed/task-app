@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\NoteController as AdminNoteController;
 use App\Http\Controllers\Admin\MeetingController as AdminMeetingController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\TrashController as AdminTrashController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\TaskController as UserTaskController;
@@ -39,6 +40,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', App\Http\Middleware\
     // Meetings
     Route::resource('meetings', AdminMeetingController::class);
     
+    // Contacts
+    Route::resource('contacts', AdminContactController::class);
+
     // Trash
     Route::get('/trash', [AdminTrashController::class, 'index'])->name('trash.index');
     Route::post('/trash/{type}/{id}/restore', [AdminTrashController::class, 'restore'])->name('trash.restore');

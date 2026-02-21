@@ -41,25 +41,6 @@
                     </div>
                 </div>
 
-                <!-- Meeting Meta Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Company</span>
-                        <span class="text-slate-200 font-semibold">{{ $meeting->company_name ?? 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Contact Person</span>
-                        <span class="text-slate-200 font-semibold">{{ $meeting->contact_person ?? 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Phone Number</span>
-                        <span class="text-slate-200 font-bold font-mono">{{ $meeting->contact_phone ?? 'N/A' }}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email Address</span>
-                        <span class="text-slate-200 font-bold">{{ $meeting->contact_email ?? 'N/A' }}</span>
-                    </div>
-                </div>
             </div>
 
             <!-- Agenda Section -->

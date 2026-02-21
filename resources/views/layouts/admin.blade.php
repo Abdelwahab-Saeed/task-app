@@ -87,6 +87,12 @@
                         </svg>
                         Meetings
                     </a>
+                    <a href="{{ route('admin.contacts.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.contacts.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.contacts.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Contacts
+                    </a>
                     <a href="{{ route('admin.trash.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.trash.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.trash.*')) style="background-color: #3FA9A6;" @endif>
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -222,6 +228,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         Meetings
+                    </a>
+                    <a href="{{ route('admin.contacts.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.contacts.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.contacts.*')) style="background-color: #3FA9A6;" @endif>
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Contact List
                     </a>
                     <a href="{{ route('admin.trash.index') }}" class="group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors {{ request()->routeIs('admin.trash.*') ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-dark-hover' }}" @if(request()->routeIs('admin.trash.*')) style="background-color: #3FA9A6;" @endif>
                         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

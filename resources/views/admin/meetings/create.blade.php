@@ -18,51 +18,24 @@
         
         <div class="rounded-2xl shadow-xl overflow-hidden" style="background-color: #22252E; border: 1px solid #2A2D36;">
             <div class="px-4 py-5 sm:p-8 space-y-6">
-                <div>
-                    <label for="title" class="block text-sm font-medium text-slate-300">Title *</label>
-                    <input type="text" name="title" id="title" value="{{ old('title') }}"
-                           class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm @error('title') ring-red-500 @enderror">
-                    @error('title')
-                        <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <div>
-                        <label for="company_name" class="block text-sm font-medium text-slate-300">Company Name</label>
-                        <input type="text" name="company_name" id="company_name" value="{{ old('company_name') }}"
-                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
-                    </div>
-
-                    <div>
-                        <label for="contact_person" class="block text-sm font-medium text-slate-300">Contact Person</label>
-                        <input type="text" name="contact_person" id="contact_person" value="{{ old('contact_person') }}"
-                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
-                    </div>
-
-                    <div>
-                        <label for="contact_phone" class="block text-sm font-medium text-slate-300">Phone Number</label>
-                        <input type="text" name="contact_phone" id="contact_phone" value="{{ old('contact_phone') }}"
-                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
-                    </div>
-
-                    <div>
-                        <label for="contact_email" class="block text-sm font-medium text-slate-300">Contact Email</label>
-                        <input type="text" name="contact_email" id="contact_email" value="{{ old('contact_email') }}"
-                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
-                        @error('contact_email')
-                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="sm:col-span-2">
-                        <label for="scheduled_at" class="block text-sm font-medium text-slate-300">Scheduled Date & Time *</label>
-                        <input type="datetime-local" name="scheduled_at" id="scheduled_at" value="{{ old('scheduled_at') }}"
-                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm @error('scheduled_at') ring-red-500 @enderror">
-                        @error('scheduled_at')
-                            <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
-                        @enderror
-                    </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-slate-300">Title *</label>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm @error('title') ring-red-500 @enderror">
+                            @error('title')
+                                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="scheduled_at" class="block text-sm font-medium text-slate-300">Scheduled Date & Time *</label>
+                            <input type="datetime-local" name="scheduled_at" id="scheduled_at" value="{{ old('scheduled_at') }}"
+                                   class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm @error('scheduled_at') ring-red-500 @enderror">
+                            @error('scheduled_at')
+                                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
                 </div>
 
                 <div>
