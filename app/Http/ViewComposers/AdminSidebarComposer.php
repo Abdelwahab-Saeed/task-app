@@ -17,7 +17,7 @@ class AdminSidebarComposer
     public function compose(View $view)
     {
         $view->with('sidebarProjects', Project::withCount('tasks')->get());
-        $view->with('sidebarUsers', User::where('role', 'user')->withCount('tasks')->get());
+        $view->with('sidebarUsers', User::withCount('tasks')->get());
     }
 }
 
