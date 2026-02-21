@@ -363,13 +363,127 @@
             </main>
         </div>
     </div>
+    <!-- Global Edit Modal -->
+    <div x-data="editModalComponent()"
+         @open-edit-modal.window="openModal($event.detail)"
+         x-show="open"
+         class="fixed inset-0 z-[100] overflow-y-auto"
+         x-cloak>
+        
+        <!-- Backdrop -->
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+             @click="closeModal()"></div>
+
+        <!-- Modal -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div x-show="open"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative transform overflow-hidden rounded-2xl text-left shadow-2xl transition-all my-8 w-[95%] md:w-[90%] lg:w-[85%] max-w-6xl border border-[#2A2D36]"
+                 style="background-color: #1A1D24;">
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white" x-text="title">Edit Record</h3>
+                        <button @click="closeModal()" class="text-slate-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div x-show="loading" class="flex justify-center py-12">
+                        <svg class="animate-spin h-10 w-10 text-primary-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+
+                    <div x-show="!loading" x-html="html" class="edit-form-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editModalComponent() {
+            return {
+                open: false,
+                url: '',
+                title: 'Edit Record',
+                loading: false,
+                html: '',
+                openModal(detail) {
+                    this.open = true;
+                    this.url = detail.url;
+                    this.title = detail.title || 'Edit Record';
+                    this.loading = true;
+                    this.html = '';
+                    
+                    fetch(this.url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return response.text();
+                    })
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        let form = doc.querySelector('main form') || doc.querySelector('form');
+                        
+                        if (form) {
+                            this.html = `<div class="p-0">${form.outerHTML}</div>`;
+                        } else {
+                            this.html = `<div class='text-red-400 p-8 text-center'>
+                                <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <p class="font-bold">Form not found</p>
+                                <p class="text-sm mt-2">Could not extract the edit form from the page.</p>
+                            </div>`;
+                        }
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        this.html = `<div class='text-red-400 p-8 text-center'>
+                            <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <p class="font-bold">Error loading form</p>
+                            <p class="text-sm mt-2">${error.message}</p>
+                        </div>`;
+                        this.loading = false;
+                    });
+                },
+                closeModal() {
+                    this.open = false;
+                }
+            }
+        }
+    </script>
+
     <!-- Global Delete Confirmation Modal -->
     <div x-data="{ 
             open: false, 
             action: '', 
             title: 'Confirm Deletion',
             message: 'Are you sure you want to delete this record? This action cannot be undone.' 
-         }"
+          }"
          @open-delete-modal.window="open = true; action = $event.detail.action; title = $event.detail.title || 'Confirm Deletion'; message = $event.detail.message || 'Are you sure you want to delete this record? This action cannot be undone.';"
          x-show="open"
          class="fixed inset-0 z-[100] overflow-y-auto"
@@ -435,6 +549,12 @@
 
     <style>
         [x-cloak] { display: none !important; }
+        .edit-form-container form {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
     </style>
 </body>
 </html>
