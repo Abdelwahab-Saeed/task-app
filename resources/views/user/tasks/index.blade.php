@@ -70,16 +70,58 @@
                                 <div class="text-sm text-slate-400">{{ $task->project?->name ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-slate-300">{{ $task->due_date->format('M d, Y') }}</div>
+                                <div class="text-sm text-slate-300">{{ $task->due_date?->format('M d, Y') ?? 'N/A' }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5
-                                    @if($task->status === 'completed') bg-green-500/10 text-green-400 border border-green-500/20
-                                    @elseif($task->status === 'in_progress') bg-blue-500/10 text-blue-400 border border-blue-500/20
-                                    @else bg-slate-500/10 text-slate-400 border border-slate-500/20
-                                    @endif">
-                                    {{ ucfirst(str_replace('_', ' ', $task->status)) }}
-                                </span>
+                            <td class="px-6 py-4 whitespace-nowrap" x-data="{ 
+                                status: '{{ $task->status }}',
+                                updating: false,
+                                async updateStatus() {
+                                    this.updating = true;
+                                    try {
+                                        const response = await fetch('{{ route('user.tasks.update-status', $task) }}', {
+                                            method: 'PATCH',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ status: this.status })
+                                        });
+                                        const data = await response.json();
+                                        if (!response.ok) throw new Error(data.message || 'Update failed');
+                                    } catch (error) {
+                                        alert(error.message);
+                                        this.status = '{{ $task->status }}';
+                                    } finally {
+                                        this.updating = false;
+                                    }
+                                }
+                            }">
+                                <div class="relative inline-block w-32">
+                                    <select x-model="status" 
+                                            @change="updateStatus"
+                                            :disabled="updating"
+                                            class="block w-full rounded-full border-0 py-1 pl-3 pr-8 text-xs font-semibold leading-5 appearance-none focus:ring-2 focus:ring-inset transition-colors cursor-pointer"
+                                            :class="{
+                                                'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 focus:ring-green-500': status === 'completed',
+                                                'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 focus:ring-blue-500': status === 'in_progress',
+                                                'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-gray-500': status === 'pending',
+                                                'opacity-50 cursor-wait': updating
+                                            }">
+                                        <option value="pending" style="background-color: #1A1D24; color: white;">Pending</option>
+                                        <option value="in_progress" style="background-color: #1A1D24; color: white;">In Progress</option>
+                                        <option value="completed" style="background-color: #1A1D24; color: white;">Completed</option>
+                                    </select>
+                                    
+                                    <template x-if="updating">
+                                        <div class="absolute right-2 top-1/2 -translate-y-1/2">
+                                            <svg class="animate-spin h-3 w-3 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </template>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex rounded-full px-2 text-xs font-semibold leading-5

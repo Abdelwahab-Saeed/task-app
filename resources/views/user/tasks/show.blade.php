@@ -75,7 +75,7 @@
                         </div>
                         <div>
                             <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Due Date</p>
-                            <p class="text-sm font-semibold text-white">{{ $task->due_date->format('F d, Y') }}</p>
+                            <p class="text-sm font-semibold text-white">{{ $task->due_date?->format('F d, Y') ?? 'N/A' }}</p>
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Reminder</p>
-                            <p class="text-sm font-semibold text-white">{{ $task->reminder_date->format('F d, Y') }}</p>
+                            <p class="text-sm font-semibold text-white">{{ $task->reminder_date?->format('F d, Y') ?? 'N/A' }}</p>
                         </div>
                     </div>
                     @endif

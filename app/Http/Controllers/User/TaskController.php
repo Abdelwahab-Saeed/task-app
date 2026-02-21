@@ -64,6 +64,10 @@ class TaskController extends Controller
 
         $task->update($validated);
 
-        return redirect()->back()->with('success', 'Task status updated successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+            'status' => $task->status
+        ]);
     }
 }
