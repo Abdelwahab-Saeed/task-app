@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-1">
         <!-- Recent Tasks -->
         <div class="rounded-xl overflow-hidden" style="background-color: #22252E; border: 1px solid #2A2D36;">
             <div class="px-6 py-4" style="border-bottom: 1px solid #2A2D36;">
@@ -110,7 +110,7 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
-                                        {{ $task->due_date->format('M d') }}
+                                        {{ $task->due_date?->format('M d') ?? 'N/A' }}
                                     </span>
                                     <span>{{ $task->user?->name }}</span>
                                     @if($task->project)
@@ -138,7 +138,7 @@
             </div>
         </div>
 
-        <!-- Upcoming Meetings -->
+        <!-- Upcoming Meetings
         <div class="rounded-xl overflow-hidden" style="background-color: #22252E; border: 1px solid #2A2D36;">
             <div class="px-6 py-4" style="border-bottom: 1px solid #2A2D36;">
                 <h2 class="text-lg font-semibold text-white">Upcoming Meetings</h2>
@@ -168,7 +168,7 @@
                     </div>
                 @endforelse
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 @endsection
