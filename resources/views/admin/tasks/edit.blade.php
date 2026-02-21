@@ -38,8 +38,8 @@
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <!-- Project -->
                     <div>
-                        <label for="project_id" class="block text-sm font-medium text-slate-300">Project</label>
-                        <select name="project_id" id="project_id"
+                        <label for="project_id" class="block text-sm font-medium text-slate-300">Project *</label>
+                        <select name="project_id" id="project_id" required
                                 class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
                             <option value="">None</option>
                             @foreach($projects as $project)
@@ -65,8 +65,8 @@
 
                     <!-- Due Date -->
                     <div>
-                        <label for="due_date" class="block text-sm font-medium text-slate-300">Due Date *</label>
-                        <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $task->due_date->format('Y-m-d')) }}" required
+                        <label for="due_date" class="block text-sm font-medium text-slate-300">Due Date</label>
+                        <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $task->due_date?->format('Y-m-d')) }}"
                                class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
                     </div>
 
@@ -77,21 +77,11 @@
                                class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
                     </div>
 
-                    <!-- Status -->
-                    <div>
-                        <label for="status" class="block text-sm font-medium text-slate-300">Status *</label>
-                        <select name="status" id="status" required
-                                class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
-                            <option value="pending" {{ old('status', $task->status) == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="in_progress" {{ old('status', $task->status) == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                            <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }}>Completed</option>
-                        </select>
-                    </div>
 
                     <!-- Priority -->
                     <div>
-                        <label for="priority" class="block text-sm font-medium text-slate-300">Priority *</label>
-                        <select name="priority" id="priority" required
+                        <label for="priority" class="block text-sm font-medium text-slate-300">Priority</label>
+                        <select name="priority" id="priority"
                                 class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">
                             <option value="low" {{ old('priority', $task->priority) == 'low' ? 'selected' : '' }}>Low</option>
                             <option value="medium" {{ old('priority', $task->priority) == 'medium' ? 'selected' : '' }}>Medium</option>
@@ -103,8 +93,8 @@
 
                 <!-- Description -->
                 <div>
-                    <label for="description" class="block text-sm font-medium text-slate-300">Description *</label>
-                    <textarea name="description" id="description" rows="4" required
+                    <label for="description" class="block text-sm font-medium text-slate-300">Description</label>
+                    <textarea name="description" id="description" rows="4" 
                               class="mt-2 block w-full rounded-md border-0 py-1.5 px-3 text-white bg-[#1A1D24] shadow-sm ring-1 ring-inset ring-[#2A2D36] focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm">{{ old('description', $task->description) }}</textarea>
                 </div>
 

@@ -25,6 +25,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', App\Http\Middleware\
     
     // Tasks
     Route::resource('tasks', AdminTaskController::class);
+    Route::patch('/tasks/{task}/status', [AdminTaskController::class, 'updateStatus'])->name('tasks.update-status');
     
     // Users
     Route::resource('users', AdminUserController::class);

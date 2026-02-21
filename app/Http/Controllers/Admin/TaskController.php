@@ -52,12 +52,11 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'project_id' => 'nullable|exists:projects,id',
+            'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
-            'due_date' => 'required|date|after:now',
-            'status' => 'required|in:pending,in_progress,completed',
-            'priority' => 'required|in:low,medium,high,urgent',
-            'description' => 'required|string',
+            'due_date' => 'nullable|date|after:now',
+            'priority' => 'nullable|in:low,medium,high,urgent',
+            'description' => 'nullable|string',
             'notes' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240', // 10MB max
             'reminder_date' => 'nullable|date|after:now',
@@ -68,6 +67,9 @@ class TaskController extends Controller
             $validated['attachment'] = $request->file('attachment')->store('task-attachments', 'public');
         }
 
+        $validated['status'] = 'pending';
+        $validated['priority'] = $validated['priority'] ?? 'medium';
+        $validated['description'] = $validated['description'] ?? '';
         Task::create($validated);
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task created successfully.');
@@ -92,12 +94,11 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'project_id' => 'nullable|exists:projects,id',
+            'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
-            'due_date' => 'required|date|after:now',
-            'status' => 'required|in:pending,in_progress,completed',
-            'priority' => 'required|in:low,medium,high,urgent',
-            'description' => 'required|string',
+            'due_date' => 'nullable|date|after:now',
+            'priority' => 'nullable|in:low,medium,high,urgent',
+            'description' => 'nullable|string',
             'notes' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240',
             'reminder_date' => 'nullable|date|after:now',
@@ -122,5 +123,20 @@ class TaskController extends Controller
         $task->delete(); // Soft delete
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task moved to trash.');
+    }
+
+    public function updateStatus(Request $request, Task $task)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,in_progress,completed',
+        ]);
+
+        $task->update(['status' => $validated['status']]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+            'status' => $task->status
+        ]);
     }
 }
