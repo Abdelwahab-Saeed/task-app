@@ -62,9 +62,36 @@
                 </thead>
                 <tbody style="background-color: #22252E;">
                     @forelse($tasks as $task)
-                        <tr class="hover:bg-opacity-50" style="border-bottom: 1px solid #2A2D36;">
+                        <tr class="hover:bg-opacity-50" style="border-bottom: 1px solid #2A2D36;" x-data="{ 
+                            status: '{{ $task->status }}',
+                            updating: false,
+                            async updateStatus() {
+                                this.updating = true;
+                                try {
+                                    const response = await fetch('{{ route('user.tasks.update-status', $task) }}', {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: JSON.stringify({ status: this.status })
+                                    });
+                                    const data = await response.json();
+                                    if (!response.ok) throw new Error(data.message || 'Update failed');
+                                } catch (error) {
+                                    alert(error.message);
+                                    this.status = '{{ $task->status }}';
+                                } finally {
+                                    this.updating = false;
+                                }
+                            }
+                        }">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-white">{{ $task->title }}</div>
+                                <div class="text-sm font-medium text-white transition-all duration-200"
+                                     :class="{ 'line-through opacity-50': status === 'completed' }">
+                                    {{ $task->title }}
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-slate-400">{{ $task->project?->name ?? 'N/A' }}</div>
@@ -72,31 +99,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-slate-300">{{ $task->due_date?->format('M d, Y') ?? 'N/A' }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap" x-data="{ 
-                                status: '{{ $task->status }}',
-                                updating: false,
-                                async updateStatus() {
-                                    this.updating = true;
-                                    try {
-                                        const response = await fetch('{{ route('user.tasks.update-status', $task) }}', {
-                                            method: 'PATCH',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Accept': 'application/json'
-                                            },
-                                            body: JSON.stringify({ status: this.status })
-                                        });
-                                        const data = await response.json();
-                                        if (!response.ok) throw new Error(data.message || 'Update failed');
-                                    } catch (error) {
-                                        alert(error.message);
-                                        this.status = '{{ $task->status }}';
-                                    } finally {
-                                        this.updating = false;
-                                    }
-                                }
-                            }">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="relative inline-block w-32">
                                     <select x-model="status" 
                                             @change="updateStatus"

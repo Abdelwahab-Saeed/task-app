@@ -88,11 +88,39 @@
             </div>
             <div style="border-top: 1px solid #2A2D36;">
                 @forelse($recentTasks as $task)
-                    <div class="p-6 hover:bg-opacity-50 transition-colors" style="border-bottom: 1px solid #2A2D36;">
+                    <div class="p-6 hover:bg-opacity-50 transition-colors" style="border-bottom: 1px solid #2A2D36;"
+                         x-data="{ 
+                                status: '{{ $task->status }}',
+                                updating: false,
+                                async updateStatus() {
+                                    this.updating = true;
+                                    try {
+                                        const response = await fetch('{{ route('user.tasks.update-status', $task) }}', {
+                                            method: 'PATCH',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ status: this.status })
+                                        });
+                                        const data = await response.json();
+                                        if (!response.ok) throw new Error(data.message || 'Update failed');
+                                    } catch (error) {
+                                        alert(error.message);
+                                        this.status = '{{ $task->status }}';
+                                    } finally {
+                                        this.updating = false;
+                                    }
+                                }
+                            }">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <h3 class="text-sm font-medium text-white">{{ $task->title }}</h3>
+                                    <h3 class="text-sm font-medium text-white transition-all duration-200"
+                                        :class="{ 'line-through opacity-50': status === 'completed' }">
+                                        {{ $task->title }}
+                                    </h3>
                                     <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold
                                         @if($task->priority === 'urgent') bg-red-500/10 text-red-400 border border-red-500/20
                                         @elseif($task->priority === 'high') bg-orange-500/10 text-orange-400 border border-orange-500/20
@@ -117,31 +145,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div x-data="{ 
-                                status: '{{ $task->status }}',
-                                updating: false,
-                                async updateStatus() {
-                                    this.updating = true;
-                                    try {
-                                        const response = await fetch('{{ route('user.tasks.update-status', $task) }}', {
-                                            method: 'PATCH',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Accept': 'application/json'
-                                            },
-                                            body: JSON.stringify({ status: this.status })
-                                        });
-                                        const data = await response.json();
-                                        if (!response.ok) throw new Error(data.message || 'Update failed');
-                                    } catch (error) {
-                                        alert(error.message);
-                                        this.status = '{{ $task->status }}';
-                                    } finally {
-                                        this.updating = false;
-                                    }
-                                }
-                            }" class="flex-shrink-0">
+                            <div class="flex-shrink-0">
                                 <div class="relative inline-block w-32">
                                     <select x-model="status" 
                                             @change="updateStatus"

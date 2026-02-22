@@ -96,12 +96,8 @@
                 @if($user->tasks->count() > 0)
                     <div class="space-y-3">
                         @foreach($user->tasks->take(10) as $task)
-                            <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-[#1A1D24] border border-transparent hover:border-[#2A2D36]">
-                                <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
-                                    <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
-                                    <span class="text-slate-200 font-medium group-hover:text-white transition-colors">{{ $task->title }}</span>
-                                </a>
-                                <div class="flex items-center gap-4" x-data="{ 
+                            <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-[#1A1D24] border border-transparent hover:border-[#2A2D36]"
+                                 x-data="{ 
                                     status: '{{ $task->status }}',
                                     updating: false,
                                     updateStatus() {
@@ -126,6 +122,14 @@
                                         });
                                     }
                                 }">
+                                <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
+                                    <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
+                                    <span class="text-slate-200 font-medium group-hover:text-white transition-all duration-200"
+                                          :class="{ 'line-through opacity-50': status === 'completed' }">
+                                        {{ $task->title }}
+                                    </span>
+                                </a>
+                                <div class="flex items-center gap-4">
                                     <div class="relative inline-block">
                                         <select x-model="status" 
                                                 @change="updateStatus"

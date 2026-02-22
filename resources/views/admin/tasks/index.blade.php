@@ -71,9 +71,34 @@
                 </thead>
                 <tbody style="background-color: #22252E;">
                     @forelse($tasks as $task)
-                        <tr class="hover:bg-opacity-50" style="border-bottom: 1px solid #2A2D36;">
+                        <tr class="hover:bg-opacity-50" style="border-bottom: 1px solid #2A2D36;" x-data="{ 
+                            status: '{{ $task->status }}',
+                            updating: false,
+                            updateStatus() {
+                                this.updating = true;
+                                fetch('{{ route('admin.tasks.update-status', $task) }}', {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({ status: this.status })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Handle success if needed (e.g., toast)
+                                    }
+                                })
+                                .finally(() => {
+                                    this.updating = false;
+                                });
+                            }
+                        }">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-white cursor-pointer hover:text-primary-400 transition-colors"
+                                     :class="{ 'line-through opacity-50': status === 'completed' }"
                                      @click="$dispatch('open-edit-modal', { 
                                          url: '{{ route('admin.tasks.edit', $task) }}',
                                          title: 'Edit Task: {{ $task->title }}'
@@ -90,31 +115,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-slate-300">{{ $task->due_date?->format('M d, Y') ?? 'N/A' }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap" x-data="{ 
-                                status: '{{ $task->status }}',
-                                updating: false,
-                                updateStatus() {
-                                    this.updating = true;
-                                    fetch('{{ route('admin.tasks.update-status', $task) }}', {
-                                        method: 'PATCH',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                            'Accept': 'application/json'
-                                        },
-                                        body: JSON.stringify({ status: this.status })
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            // Handle success if needed (e.g., toast)
-                                        }
-                                    })
-                                    .finally(() => {
-                                        this.updating = false;
-                                    });
-                                }
-                            }">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="relative inline-block w-full">
                                     <select x-model="status" 
                                             @change="updateStatus"

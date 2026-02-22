@@ -95,7 +95,9 @@
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <h3 class="text-sm font-medium text-white">{{ $task->title }}</h3>
+                                    <h3 class="text-sm font-medium text-white transition-all duration-200 {{ $task->status === 'completed' ? 'line-through opacity-50' : '' }}">
+                                        {{ $task->title }}
+                                    </h3>
                                     <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold
                                         @if($task->priority === 'urgent') bg-red-500/10 text-red-400 border border-red-500/20
                                         @elseif($task->priority === 'high') bg-orange-500/10 text-orange-400 border border-orange-500/20
