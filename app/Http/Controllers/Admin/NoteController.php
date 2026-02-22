@@ -17,7 +17,7 @@ class NoteController extends Controller
                   ->orWhere('content', 'like', '%' . $request->search . '%');
         }
 
-        $notes = $query->latest()->paginate(5);
+        $notes = $query->latest()->paginate(5)->withQueryString();
 
         return view('admin.notes.index', compact('notes'));
     }

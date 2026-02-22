@@ -16,7 +16,7 @@ class MeetingController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $meetings = $query->orderBy('scheduled_at', 'desc')->paginate(5);
+        $meetings = $query->orderBy('scheduled_at', 'desc')->paginate(5)->withQueryString();
 
         return view('admin.meetings.index', compact('meetings'));
     }

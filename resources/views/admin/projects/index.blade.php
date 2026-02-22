@@ -17,6 +17,25 @@
         </div>
     </div>
 
+    <!-- Filters -->
+    <div class="bg-white shadow rounded-lg" style="background-color: #22252E; border: 1px solid #2A2D36;">
+        <form method="GET" action="{{ route('admin.projects.index') }}" class="p-4">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search projects..." class="block w-full rounded-md border-0 py-1.5 px-3 text-white shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm" style="background-color: #1A1D24; border-color: #2A2D36; color: white;" />
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm" style="background-color: #3FA9A6;">
+                        Filter
+                    </button>
+                    <a href="{{ route('admin.projects.index') }}" class="inline-flex items-center text-center rounded-md bg-[#1A1D24] px-4 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-[#2A2D36] hover:bg-[#2A2D36] transition-colors">
+                        Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div class="shadow rounded-lg" style="background-color: #22252E; border: 1px solid #2A2D36;">
         <div class="overflow-x-auto">
             <table class="min-w-full" style="border-top: 1px solid #2A2D36;">
