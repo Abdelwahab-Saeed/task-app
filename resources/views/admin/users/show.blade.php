@@ -96,20 +96,68 @@
                 @if($user->tasks->count() > 0)
                     <div class="space-y-3">
                         @foreach($user->tasks->take(10) as $task)
-                            <a href="{{ route('admin.tasks.show', $task) }}" class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-[#1A1D24] border border-transparent hover:border-[#2A2D36]">
-                                <div class="flex items-center gap-4">
+                            <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-[#1A1D24] border border-transparent hover:border-[#2A2D36]">
+                                <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
                                     <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
                                     <span class="text-slate-200 font-medium group-hover:text-white transition-colors">{{ $task->title }}</span>
+                                </a>
+                                <div class="flex items-center gap-4" x-data="{ 
+                                    status: '{{ $task->status }}',
+                                    updating: false,
+                                    updateStatus() {
+                                        this.updating = true;
+                                        fetch('{{ route('admin.tasks.update-status', $task) }}', {
+                                            method: 'PATCH',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ status: this.status })
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                // Status updated
+                                            }
+                                        })
+                                        .finally(() => {
+                                            this.updating = false;
+                                        });
+                                    }
+                                }">
+                                    <div class="relative inline-block">
+                                        <select x-model="status" 
+                                                @change="updateStatus"
+                                                :disabled="updating"
+                                                class="block w-full rounded-full border-0 py-0.5 pl-3 pr-8 text-[10px] font-bold uppercase tracking-widest appearance-none focus:ring-1 focus:ring-inset transition-colors cursor-pointer"
+                                                :class="{
+                                                    'bg-green-500/10 text-green-500 focus:ring-green-500': status === 'completed',
+                                                    'bg-blue-500/10 text-blue-500 focus:ring-blue-500': status === 'in_progress',
+                                                    'bg-slate-500/10 text-slate-500 focus:ring-slate-500': status === 'pending',
+                                                    'opacity-50 cursor-wait': updating
+                                                }">
+                                            <option value="pending" style="background-color: #1A1D24; color: white;">Pending</option>
+                                            <option value="in_progress" style="background-color: #1A1D24; color: white;">In Progress</option>
+                                            <option value="completed" style="background-color: #1A1D24; color: white;">Completed</option>
+                                        </select>
+                                        
+                                        <template x-if="updating">
+                                            <div class="absolute right-2 top-1/2 -translate-y-1/2">
+                                                <svg class="animate-spin h-3 w-3 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <a href="{{ route('admin.tasks.show', $task) }}" class="group-hover:text-primary-500 transition-colors">
+                                        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-xs font-bold uppercase tracking-widest {{ $task->status === 'completed' ? 'text-green-500/70' : 'text-slate-500' }}">
-                                        {{ str_replace('_', ' ', $task->status) }}
-                                    </span>
-                                    <svg class="w-4 h-4 text-slate-600 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </div>
-                            </a>
+                            </div>
                         @endforeach
                     </div>
                 @else
