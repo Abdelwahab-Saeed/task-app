@@ -372,6 +372,14 @@
                         @yield('content')
                     </div>
                 </div>
+
+                <!-- Copyright Footer -->
+                <div class="border-t px-6 py-3 text-center" style="border-color: #1A1D24;">
+                    <p class="text-s text-slate-500"> 
+                        Developed and Maintained by <a href="https://falak-innovation.com" target="_blank" class="text-primary-500 hover:text-primary-400">Falak Innovation</a> 
+                        © All Rights Reserved - Task Management.
+                    </p>
+                </div>
             </main>
         </div>
     </div>
