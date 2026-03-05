@@ -51,14 +51,11 @@
                         </svg>
                         Related Tasks
                     </h3>
-                    @if($project->tasks->count() > 0)
-                        <span class="text-xs font-bold text-black opacity-40 uppercase tracking-widest">Showing last {{ min(10, $project->tasks->count()) }}</span>
-                    @endif
                 </div>
 
                 @if($project->tasks->count() > 0)
                     <div class="space-y-3">
-                        @foreach($project->tasks->take(10) as $task)
+                        @foreach($project->tasks as $task)
                             <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-slate-50 border border-transparent hover:border-soft"
                                  x-data="{ 
                                     status: '{{ $task->status }}',
