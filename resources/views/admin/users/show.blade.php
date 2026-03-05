@@ -47,16 +47,16 @@
 
                     <div class="space-y-4 pt-6 border-t border-soft">
                         <div>
-                            <label class="text-xs font-bold text-black opacity-40 uppercase tracking-wider">Email Address</label>
-                            <p class="text-black font-medium mt-1">{{ $user->email }}</p>
+                            <label class="text-sm font-bold text-black uppercase tracking-wider">Email Address</label>
+                            <p class="text-md text-black font-medium mt-1">{{ $user->email }}</p>
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-black opacity-40 uppercase tracking-wider">Phone Number</label>
-                            <p class="text-black font-medium mt-1">{{ $user->phone ?? 'N/A' }}</p>
+                            <label class="text-sm font-bold text-black uppercase tracking-wider">Phone Number</label>
+                            <p class="text-md text-black font-medium mt-1">{{ $user->phone ?? 'N/A' }}</p>
                         </div>
                         <div>
-                            <label class="text-xs font-bold text-black opacity-40 uppercase tracking-wider">Join Date</label>
-                            <p class="text-black font-medium mt-1">{{ $user->created_at->format('M d, Y') }}</p>
+                            <label class="text-sm font-bold text-black uppercase tracking-wider">Join Date</label>
+                            <p class="text-md text-black font-medium mt-1">{{ $user->created_at->format('M d, Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -66,11 +66,11 @@
             <div class="bg-white rounded-xl border border-subtle shadow-sm p-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="text-center p-4 bg-slate-50 rounded-xl border border-soft">
-                        <p class="text-xs font-bold text-black opacity-40 uppercase tracking-wider">Tasks</p>
-                        <p class="text-2xl font-bold text-black mt-1">{{ $user->tasks_count }}</p>
+                        <p class="text-xs font-bold text-black uppercase tracking-wider">Tasks</p>
+                        <p class="text-2xl font-bold text-black mt-1">{{ $user->tasks->count() }}</p>
                     </div>
                     <div class="text-center p-4 bg-slate-50 rounded-xl border border-soft">
-                        <p class="text-xs font-bold text-black opacity-40 uppercase tracking-wider">Completed</p>
+                        <p class="text-xs font-bold text-black uppercase tracking-wider">Completed</p>
                         <p class="text-2xl font-bold text-green-600 mt-1">{{ $user->tasks->where('status', 'completed')->count() }}</p>
                     </div>
                 </div>
@@ -87,13 +87,13 @@
                         </svg>
                         Assigned Tasks
                     </h3>
-                    <span class="text-xs font-bold text-black opacity-40 uppercase tracking-widest">Total Tasks: {{ $user->tasks->count() }}</span>
+                    <span class="text-xs font-bold text-black uppercase tracking-widest">TOTAL TASKS: {{ $user->tasks->count() }}</span>
                 </div>
 
                 <div class="p-6">
                     @if($user->tasks->count() > 0)
                         <div class="space-y-3">
-                            @foreach($user->tasks->take(10) as $task)
+                            @foreach($user->tasks as $task)
                                 <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-slate-50 border border-transparent hover:border-soft"
                                      x-data="{ 
                                         status: '{{ $task->status }}',
@@ -114,8 +114,8 @@
                                     }">
                                     <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
                                         <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
-                                        <span class="text-black opacity-70 font-medium group-hover:opacity-100 transition-all duration-200"
-                                              :class="{ 'line-through opacity-30': status === 'completed' }">
+                                        <span class="text-black font-bold group-hover:text-primary-600 transition-all duration-200"
+                                              :class="{ 'line-through': status === 'completed' }">
                                             {{ $task->title }}
                                         </span>
                                     </a>
@@ -128,7 +128,7 @@
                                                     :class="{
                                                         'bg-green-50 text-green-700 border border-green-100 focus:ring-green-500': status === 'completed',
                                                         'bg-blue-50 text-blue-700 border border-blue-100 focus:ring-blue-500': status === 'in_progress',
-                                                        'bg-slate-50 text-black opacity-70 border border-subtle focus:ring-slate-500': status === 'pending',
+                                                        'bg-slate-50 text-black border border-subtle focus:ring-slate-500': status === 'pending',
                                                         'opacity-50 cursor-wait': updating
                                                     }">
                                                 <option value="pending">Pending</option>
@@ -142,7 +142,7 @@
                         </div>
                     @else
                         <div class="text-center py-12 rounded-2xl border-2 border-dashed border-soft bg-slate-50">
-                            <p class="text-black opacity-40 font-medium">No tasks assigned to this user yet.</p>
+                            <p class="text-black font-medium italic">No tasks assigned to this user yet.</p>
                         </div>
                     @endif
                 </div>
@@ -156,7 +156,7 @@
                                 title: 'Delete User',
                                 message: 'Are you sure you want to delete user \'{{ $user->name }}\'?'
                             })"
-                            class="text-black opacity-40 hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2">
+                            class="text-black hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
@@ -165,8 +165,6 @@
                 </div>
             @endif
         </div>
-    </div>
-
     </div>
 </div>
 @endsection

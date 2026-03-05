@@ -30,14 +30,14 @@
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-primary-50 text-primary-600 border border-primary-100">
                                 Project
                             </span>
-                            <span class="text-black opacity-40 text-sm font-medium">
+                            <span class="text-black text-sm font-bold">
                                 Created {{ $project->created_at->format('M d, Y') }}
                             </span>
                         </div>
                     </div>
                     <div class="flex-shrink-0 bg-slate-50 border border-subtle rounded-xl px-5 py-3 text-center">
                         <div class="text-2xl font-bold text-black">{{ $project->tasks->count() }}</div>
-                        <div class="text-[10px] font-bold text-black opacity-50 uppercase tracking-widest">Total Tasks</div>
+                        <div class="text-[10px] font-bold text-black uppercase tracking-widest">Total Tasks</div>
                     </div>
                 </div>
             </div>
@@ -76,8 +76,8 @@
                                 }">
                                 <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
                                     <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
-                                    <span class="text-black opacity-70 font-medium group-hover:opacity-100 transition-all duration-200"
-                                          :class="{ 'line-through opacity-30': status === 'completed' }">
+                                    <span class="text-black font-bold group-hover:text-primary-600 transition-all duration-200"
+                                          :class="{ 'line-through': status === 'completed' }">
                                         {{ $task->title }}
                                     </span>
                                 </a>
@@ -90,7 +90,7 @@
                                                 :class="{
                                                     'bg-green-50 text-green-700 border border-green-100 focus:ring-green-500': status === 'completed',
                                                     'bg-blue-50 text-blue-700 border border-blue-100 focus:ring-blue-500': status === 'in_progress',
-                                                    'bg-slate-50 text-black opacity-70 border border-subtle focus:ring-slate-500': status === 'pending',
+                                                    'bg-slate-50 text-black border border-subtle focus:ring-slate-500': status === 'pending',
                                                     'opacity-50 cursor-wait': updating
                                                 }">
                                             <option value="pending">Pending</option>
@@ -99,7 +99,7 @@
                                         </select>
                                     </div>
                                     <a href="{{ route('admin.tasks.show', $task) }}" class="group-hover:text-primary-600 transition-colors">
-                                        <svg class="w-4 h-4 text-black opacity-30 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 text-black hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                         </svg>
                                     </a>
@@ -109,7 +109,7 @@
                     </div>
                 @else
                     <div class="text-center py-12 rounded-2xl border-2 border-dashed border-soft bg-slate-50">
-                        <p class="text-black opacity-40 font-medium">No tasks linked to this project yet.</p>
+                        <p class="text-black font-medium italic">No tasks linked to this project yet.</p>
                     </div>
                 @endif
             </div>
@@ -122,7 +122,7 @@
                             title: 'Delete Project',
                             message: 'Are you sure you want to delete project \'{{ $project->name }}\'?'
                         })"
-                        class="text-black opacity-40 hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2">
+                        class="text-black hover:text-red-600 text-sm font-medium transition-colors flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                     </svg>
