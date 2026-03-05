@@ -35,7 +35,7 @@ class TaskController extends Controller
         $sortDirection = $request->get('direction', 'desc');
         $query->orderBy($sortField, $sortDirection);
 
-        $tasks = $query->paginate(5);
+        $tasks = $query->get();
 
         return view('admin.tasks.index', compact('tasks'));
     }

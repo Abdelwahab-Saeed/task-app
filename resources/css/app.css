@@ -9,12 +9,30 @@
 @theme {
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
   
+  /* Primary Palette */
+  --color-primary-50: #f0fdfc;
+  --color-primary-100: #ccfbf8;
+  --color-primary-200: #99f6f0;
+  --color-primary-300: #5eeee5;
+  --color-primary-400: #3fa9a6;
+  --color-primary-500: #3fa9a6;
+  --color-primary-600: #2d8b89;
+  --color-primary-700: #1f6b6a;
+  --color-primary-800: #155554;
+  --color-primary-900: #0e4544;
+  --color-primary-950: #062827;
+
+  /* Subtle Borders for Light Theme */
+  --color-subtle: #F1F5F9; /* slate-100 */
+  --color-soft: #F8FAFC;   /* slate-50 */
+
   /* Custom dark theme colors matching Figma */
   --color-dark-bg: #0F1117;
   --color-dark-card: #22252E;
   --color-dark-sidebar: #0A0D12;
   --color-dark-border: #2A2D36;
 }
+
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
@@ -23,14 +41,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1D24;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2A2D34;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3A3D44;
+  background: #94A3B8;
 }

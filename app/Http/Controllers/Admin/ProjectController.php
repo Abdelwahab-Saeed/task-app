@@ -16,7 +16,7 @@ class ProjectController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $projects = $query->paginate(5)->withQueryString();
+        $projects = $query->get();
 
         return view('admin.projects.index', compact('projects'));
     }

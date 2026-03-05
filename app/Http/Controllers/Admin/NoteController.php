@@ -17,7 +17,7 @@ class NoteController extends Controller
                   ->orWhere('content', 'like', '%' . $request->search . '%');
         }
 
-        $notes = $query->latest()->paginate(5)->withQueryString();
+        $notes = $query->latest()->get();
 
         return view('admin.notes.index', compact('notes'));
     }
@@ -32,7 +32,7 @@ class NoteController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'reference_link' => 'nullable|url|max:255',
+            'reference_link' => 'nullable|string|max:255',
         ]);
 
         Note::create($validated);
@@ -55,7 +55,7 @@ class NoteController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'reference_link' => 'nullable|url|max:255',
+            'reference_link' => 'nullable|string|max:255',
         ]);
 
         $note->update($validated);

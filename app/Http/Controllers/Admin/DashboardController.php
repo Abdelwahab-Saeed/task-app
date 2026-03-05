@@ -10,13 +10,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Calculate statistics
-        $activeTasks = Task::whereIn('status', ['pending', 'in_progress'])->count();
-        $completedTasks = Task::where('status', 'completed')->count();
-        $urgentTasks = Task::where('priority', 'urgent')->count();
-        
         $totalTasks = Task::count();
-        $completionRate = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
+        
+        $stats = [
+            'active_tasks' => Task::whereIn('status', ['pending', 'in_progress'])->count(),
+            'completed_tasks' => Task::where('status', 'completed')->count(),
+            'urgent_tasks' => Task::where('priority', 'urgent')->count(),
+            'total_tasks' => $totalTasks,
+        ];
 
         // Recent tasks
         $recentTasks = Task::with(['user', 'project'])
@@ -31,10 +32,7 @@ class DashboardController extends Controller
             ->get();
 
         return view('admin.dashboard', compact(
-            'activeTasks',
-            'completedTasks',
-            'urgentTasks',
-            'completionRate',
+            'stats',
             'recentTasks',
             'upcomingMeetings'
         ));

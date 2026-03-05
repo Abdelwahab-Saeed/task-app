@@ -6,7 +6,7 @@
     <title>Admin Dashboard - TaskFlow</title>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/darkmode.js'])
 </head>
-<body class="h-full" style="background-color: #0F1117;">
+<body class="h-full" style="background-color: #F8FAFC;">
     <div class="flex h-full" x-data="{ sidebarOpen: false }">
         <!-- Mobile Sidebar -->
         <div x-show="sidebarOpen" 
@@ -334,14 +334,15 @@
         <!-- Main content -->
         <div class="flex flex-col flex-1 overflow-hidden">
             <!-- Top bar -->
-            <div class="relative z-10 flex-shrink-0 flex h-16 border-b" style="background-color: #0F1117; border-color: #1A1D24;">
+            <div class="relative z-10 flex-shrink-0 flex h-16 border-b" style="background-color: #FFFFFF; border-color: var(--color-subtle);">
                 <div class="flex-1 px-4 sm:px-6 flex justify-between items-center">
-                    <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-400 hover:text-white md:hidden transition-colors">
+                    <button type="button" @click="sidebarOpen = true" class="p-2 text-black opacity-50 hover:opacity-100 md:hidden transition-opacity">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
+
                     <div class="flex-1"></div>
                     <!-- <div class="ml-4 flex items-center gap-3">
                         <button id="darkModeToggle" class="p-2 text-slate-400 hover:text-white hover:bg-dark-hover rounded-lg transition-colors">
@@ -353,8 +354,8 @@
                 </div>
             </div>
 
-            <!-- Page content -->
-            <main class="flex-1 relative overflow-y-auto focus:outline-none" style="background-color: #0F1117;">
+                <!-- Page content -->
+            <main class="flex-1 relative overflow-y-auto focus:outline-none text-base" style="background-color: #F8FAFC;">
                 <div class="py-6">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         @if(session('success'))
@@ -374,13 +375,14 @@
                 </div>
 
                 <!-- Copyright Footer -->
-                <div class="border-t px-6 py-3 text-center" style="border-color: #1A1D24;">
-                    <p class="text-s text-slate-500"> 
+                <div class="border-t px-6 py-3 text-center border-soft">
+                    <p class="text-sm text-black opacity-40"> 
                         Developed and Maintained by <a href="https://falak-innovation.com" target="_blank" class="text-primary-500 hover:text-primary-400">Falak Innovation</a> 
                         © All Rights Reserved - Task Management.
                     </p>
                 </div>
             </main>
+
         </div>
     </div>
     <!-- Global Edit Modal -->
@@ -410,13 +412,12 @@
                  x-transition:leave="ease-in duration-200"
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 class="relative transform overflow-hidden rounded-2xl text-left shadow-2xl transition-all my-8 w-[95%] md:w-[90%] lg:w-[85%] max-w-6xl border border-[#2A2D36]"
-                 style="background-color: #1A1D24;">
+                 class="relative transform overflow-hidden rounded-2xl text-left shadow-2xl transition-all my-8 w-[95%] md:w-[90%] lg:w-[85%] max-w-6xl border border-slate-200 bg-white">
                 
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-bold text-white" x-text="title">Edit Record</h3>
-                        <button @click="closeModal()" class="text-slate-400 hover:text-white transition-colors">
+                        <h3 class="text-xl font-bold text-black" x-text="title">Edit Record</h3>
+                        <button @click="closeModal()" class="text-black opacity-40 hover:opacity-100 transition-opacity">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -529,27 +530,26 @@
                  x-transition:leave="ease-in duration-200"
                  x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                  x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 class="relative transform overflow-hidden rounded-2xl text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-[#2A2D36]"
-                 style="background-color: #1A1D24;">
+                 class="relative transform overflow-hidden rounded-2xl text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-slate-200 bg-white">
                 
                 <div class="p-6">
                     <div class="flex items-center gap-4 mb-4 text-red-500">
-                        <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white" x-text="title">Delete Record</h3>
+                        <h3 class="text-xl font-bold text-black" x-text="title">Delete Record</h3>
                     </div>
                     
-                    <p class="text-slate-400 leading-relaxed mb-8" x-text="message">
+                    <p class="text-black opacity-60 leading-relaxed mb-8" x-text="message">
                         Are you sure you want to delete this record? This action cannot be undone.
                     </p>
 
                     <div class="flex gap-3">
                         <button type="button" 
                                 @click="open = false" 
-                                class="flex-1 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors border border-[#2A2D36]">
+                                class="flex-1 px-4 py-2.5 rounded-xl text-sm font-bold text-black opacity-60 hover:opacity-100 hover:bg-slate-50 transition-all border border-slate-100">
                             Cancel
                         </button>
                         <form :action="action" method="POST" class="flex-1">

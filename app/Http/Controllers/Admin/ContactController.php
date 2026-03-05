@@ -18,7 +18,7 @@ class ContactController extends Controller
                   ->orWhere('email', 'like', '%' . $request->search . '%');
         }
 
-        $contacts = $query->latest()->paginate(10)->withQueryString();
+        $contacts = $query->latest()->get();
 
         return view('admin.contacts.index', compact('contacts'));
     }
