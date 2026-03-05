@@ -60,6 +60,13 @@ class NoteController extends Controller
 
         $note->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Note updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.notes.index')->with('success', 'Note updated successfully.');
     }
 

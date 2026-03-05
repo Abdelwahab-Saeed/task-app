@@ -57,6 +57,13 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Project updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully.');
     }
 

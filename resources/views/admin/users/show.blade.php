@@ -112,13 +112,14 @@
                                             .finally(() => this.updating = false);
                                         }
                                     }">
-                                    <a href="{{ route('admin.tasks.show', $task) }}" class="flex items-center gap-4 flex-1">
-                                        <div class="w-1.5 h-1.5 rounded-full {{ $task->status === 'completed' ? 'bg-green-500' : 'bg-blue-500' }}"></div>
-                                        <span class="text-black font-bold group-hover:text-primary-600 transition-all duration-200"
-                                              :class="{ 'line-through': status === 'completed' }">
-                                            {{ $task->title }}
-                                        </span>
-                                    </a>
+                                    <div class="text-md font-medium text-black cursor-pointer hover:text-primary-600 transition-colors"
+                                         :class="{ 'line-through': status === 'completed' }"
+                                         @click="$dispatch('open-edit-modal', { 
+                                             url: '{{ route('admin.tasks.edit', $task) }}',
+                                             title: 'Edit Task: {{ $task->title }}'
+                                         })">
+                                        {{ $task->title }}
+                                    </div>
                                     <div class="flex items-center gap-4">
                                         <div class="relative inline-block">
                                             <select x-model="status" 

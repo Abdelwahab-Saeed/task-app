@@ -61,6 +61,13 @@ class MeetingController extends Controller
 
         $meeting->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Meeting updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.meetings.index')->with('success', 'Meeting updated successfully.');
     }
 

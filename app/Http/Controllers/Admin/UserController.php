@@ -78,6 +78,13 @@ class UserController extends Controller
 
         $user->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 

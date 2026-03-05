@@ -444,13 +444,16 @@
                 url: '',
                 title: 'Edit Record',
                 loading: false,
+                submitLoading: false,
                 html: '',
+                errors: {},
                 openModal(detail) {
                     this.open = true;
                     this.url = detail.url;
                     this.title = detail.title || 'Edit Record';
                     this.loading = true;
                     this.html = '';
+                    this.errors = {};
                     
                     fetch(this.url, {
                         headers: {
@@ -469,6 +472,9 @@
                         
                         if (form) {
                             this.html = `<div class="p-0">${form.outerHTML}</div>`;
+                            this.$nextTick(() => {
+                                this.attachFormSubmitListener();
+                            });
                         } else {
                             this.html = `<div class='text-red-400 p-8 text-center'>
                                 <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -491,7 +497,79 @@
                         this.loading = false;
                     });
                 },
+                attachFormSubmitListener() {
+                    const form = document.querySelector('.edit-form-container form');
+                    if (!form) return;
+
+                    form.onsubmit = async (e) => {
+                        if (this.submitLoading) return;
+                        
+                        e.preventDefault();
+                        this.submitLoading = true;
+                        this.clearErrors();
+
+                        const formData = new FormData(form);
+                        
+                        try {
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            const result = await response.json();
+
+                            if (response.ok) {
+                                // Success - just reload the page to stay on the same URL but see changes
+                                window.location.reload();
+                            } else if (response.status === 422) {
+                                // Validation errors
+                                this.errors = result.errors;
+                                this.displayErrors();
+                            } else {
+                                throw new Error(result.message || 'Something went wrong');
+                            }
+                        } catch (error) {
+                            console.error('Submission error:', error);
+                            alert('An error occurred while saving. Please try again.');
+                        } finally {
+                            this.submitLoading = false;
+                        }
+                    };
+                },
+                clearErrors() {
+                    document.querySelectorAll('.error-message').forEach(el => el.remove());
+                    document.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500', 'ring-1', 'ring-red-500'));
+                },
+                displayErrors() {
+                    Object.keys(this.errors).forEach(key => {
+                        const input = document.querySelector(`[name="${key}"]`) || 
+                                      document.querySelector(`[name="${key}[]"]`) ||
+                                      document.querySelector(`[id="${key}"]`);
+                        
+                        if (input) {
+                            input.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                            const errorEl = document.createElement('p');
+                            errorEl.className = 'error-message text-red-500 text-[11px] font-medium mt-1';
+                            errorEl.textContent = this.errors[key][0];
+                            
+                            // Handle potential wrapper for custom selects or inputs
+                            const container = input.closest('.flex-1') || input.parentElement;
+                            container.appendChild(errorEl);
+                        }
+                    });
+
+                    // Scroll the first error into view if needed
+                    const firstError = document.querySelector('.error-message');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                },
                 closeModal() {
+                    if (this.submitLoading) return;
                     this.open = false;
                 }
             }

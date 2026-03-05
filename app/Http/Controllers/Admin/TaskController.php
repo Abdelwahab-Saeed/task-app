@@ -96,12 +96,13 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'project_id' => 'required|exists:projects,id',
             'user_id' => 'required|exists:users,id',
-            'due_date' => 'nullable|date|after:now',
+            'due_date' => 'nullable|date',
             'priority' => 'nullable|in:low,medium,high,urgent',
+            'status' => 'nullable|in:pending,in_progress,completed',
             'description' => 'nullable|string',
             'notes' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240',
-            'reminder_date' => 'nullable|date|after:now',
+            'reminder_date' => 'nullable|date',
         ]);
 
         // Handle file upload
@@ -114,6 +115,13 @@ class TaskController extends Controller
         }
 
         $task->update($validated);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Task updated successfully.'
+            ]);
+        }
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task updated successfully.');
     }

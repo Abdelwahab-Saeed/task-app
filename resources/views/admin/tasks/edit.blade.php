@@ -89,6 +89,17 @@
                             <option value="urgent" {{ old('priority', $task->priority) == 'urgent' ? 'selected' : '' }} style="background-color: white; color: #000;">Urgent</option>
                         </select>
                     </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-black">Status</label>
+                        <select name="status" id="status"
+                                class="mt-2 block w-full rounded-md border-slate-100 py-1.5 px-3 text-black shadow-sm focus:ring-2 focus:ring-inset sm:text-sm" style="background-color: #F8FAFC; border: 1px solid #F1F5F9;">
+                            <option value="pending" {{ old('status', $task->status) == 'pending' ? 'selected' : '' }} style="background-color: white; color: #000;">Pending</option>
+                            <option value="in_progress" {{ old('status', $task->status) == 'in_progress' ? 'selected' : '' }} style="background-color: white; color: #000;">In Progress</option>
+                            <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }} style="background-color: white; color: #000;">Completed</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Description -->

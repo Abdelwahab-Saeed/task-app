@@ -65,6 +65,13 @@ class ContactController extends Controller
 
         $contact->update($validated);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Contact updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.contacts.index')->with('success', 'Contact updated successfully.');
     }
 

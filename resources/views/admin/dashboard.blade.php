@@ -92,13 +92,18 @@
                 </thead>
                 <tbody class="divide-y divide-subtle">
                     @forelse($recentTasks as $task)
-                        <tr class="hover:bg-slate-50/50 transition-colors">
+                        <tr class="hover:bg-slate-50/50 transition-colors" x-data="{ status: '{{ $task->status }}' }">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
                                     <div class="flex items-center gap-2">
-                                        <a href="{{ route('admin.tasks.show', $task) }}" class="text-md font-bold text-black hover:text-primary-600 transition-colors leading-tight">
+                                        <div class="text-md font-medium text-black cursor-pointer hover:text-primary-600 transition-colors"
+                                            :class="{ 'line-through': status === 'completed' }"
+                                            @click="$dispatch('open-edit-modal', { 
+                                                url: '{{ route('admin.tasks.edit', $task) }}',
+                                                title: 'Edit Task: {{ $task->title }}'
+                                            })">
                                             {{ $task->title }}
-                                        </a>
+                                        </div>
                                         <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider
                                             @if($task->priority === 'urgent') bg-red-50 text-red-700 border border-red-100
                                             @elseif($task->priority === 'high') bg-orange-50 text-orange-700 border border-orange-100
