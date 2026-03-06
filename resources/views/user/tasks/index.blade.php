@@ -139,6 +139,13 @@
                                         <option value="completed">Completed</option>
                                     </select>
                                     
+                                    <!-- Dropdown Arrow Icon -->
+                                    <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" x-show="!updating">
+                                        <svg class="w-4 h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+
                                     <template x-if="updating">
                                         <div class="absolute right-2 top-1/2 -translate-y-1/2">
                                             <svg class="animate-spin h-3 w-3 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

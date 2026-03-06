@@ -140,15 +140,15 @@
                                 <div class="text-md text-black">{{ $task->due_date?->format('M d, Y') ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="relative inline-block w-full">
+                                <div class="relative inline-block w-32">
                                     <select x-model="status" 
                                             @change="updateStatus"
                                             :disabled="updating"
                                             class="block w-full rounded-full border-0 py-1 pl-3 pr-8 text-sm font-semibold leading-5 appearance-none focus:ring-2 focus:ring-inset transition-colors cursor-pointer"
                                             :class="{
-                                                'bg-green-50 text-green-700 focus:ring-green-500': status === 'completed',
-                                                'bg-blue-50 text-blue-700 focus:ring-blue-500': status === 'in_progress',
-                                                'bg-slate-50 text-slate-700 focus:ring-slate-500': status === 'pending',
+                                                'bg-green-50 text-green-700 focus:ring-green-500 border border-green-100': status === 'completed',
+                                                'bg-blue-50 text-blue-700 focus:ring-blue-500 border border-blue-100': status === 'in_progress',
+                                                'bg-slate-50 text-slate-700 focus:ring-slate-500 border border-soft': status === 'pending',
                                                 'opacity-50 cursor-wait': updating
                                             }">
                                         <option value="pending" class="bg-white text-black">Pending</option>
@@ -156,6 +156,13 @@
                                         <option value="completed" class="bg-white text-black">Completed</option>
                                     </select>
                                     
+                                    <!-- Dropdown Arrow Icon -->
+                                    <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" x-show="!updating">
+                                        <svg class="w-4 h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+
                                     <template x-if="updating">
                                         <div class="absolute right-2 top-1/2 -translate-y-1/2">
                                             <svg class="animate-spin h-3 w-3 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
