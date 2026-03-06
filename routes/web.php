@@ -60,6 +60,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', App\Http\Middleware\Us
     Route::get('/tasks', [UserTaskController::class, 'index'])->name('tasks.index');
     Route::get('/tasks/{task}', [UserTaskController::class, 'show'])->name('tasks.show');
     Route::patch('/tasks/{task}/status', [UserTaskController::class, 'updateStatus'])->name('tasks.update-status');
+    Route::post('/tasks/{task}/toggle-added', [UserTaskController::class, 'toggleAdded'])->name('tasks.toggle-added');
     
     // TODO: Add user-specific routes for notes and meetings if needed
 });

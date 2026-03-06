@@ -34,7 +34,7 @@ class TaskController extends Controller
         $sortDirection = $request->get('direction', 'desc');
         $query->orderBy($sortField, $sortDirection);
 
-        $tasks = $query->paginate(5);
+        $tasks = $query->get();
 
         return view('user.tasks.index', compact('tasks'));
     }
@@ -68,6 +68,22 @@ class TaskController extends Controller
             'success' => true,
             'message' => 'Status updated successfully',
             'status' => $task->status
+        ]);
+    }
+
+    public function toggleAdded(Request $request, Task $task)
+    {
+        // Ensure user can only toggle their own tasks
+        if ($task->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $task->update(['is_added' => !$task->is_added]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dashboard status updated successfully',
+            'is_added' => $task->is_added
         ]);
     }
 }

@@ -30,9 +30,10 @@ class DashboardController extends Controller
 
         // Recent tasks
         $recentTasks = Task::where('user_id', $userId)
+            ->where('is_added', true)
             ->with('project')
             ->latest()
-            ->take(5)
+            ->take(10)
             ->get();
 
         // Upcoming meetings

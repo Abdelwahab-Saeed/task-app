@@ -7,7 +7,7 @@
     <title>User Dashboard - TaskFlow</title>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/darkmode.js'])
 </head>
-<body class="h-full" style="background-color: #0F1117;">
+<body class="h-full" style="background-color: #F8FAFC;">
     <div class="flex h-full" x-data="{ sidebarOpen: false }">
         <!-- Mobile Sidebar -->
         <div x-show="sidebarOpen" 
@@ -152,9 +152,9 @@
         <!-- Main content -->
         <div class="flex flex-col flex-1 overflow-hidden">
             <!-- Top bar -->
-            <div class="relative z-10 flex-shrink-0 flex h-16 border-b" style="background-color: #0F1117; border-color: #1A1D24;">
+            <div class="relative z-10 flex-shrink-0 flex h-16 border-b" style="background-color: #FFFFFF; border-color: #E2E8F0;">
                 <div class="flex-1 px-4 sm:px-6 flex justify-between items-center">
-                    <button type="button" @click="sidebarOpen = true" class="p-2 text-slate-400 hover:text-white md:hidden transition-colors">
+                    <button type="button" @click="sidebarOpen = true" class="p-2 text-black opacity-50 hover:opacity-100 md:hidden transition-opacity">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -172,7 +172,7 @@
             </div>
 
             <!-- Page content -->
-            <main class="flex-1 relative overflow-y-auto focus:outline-none" style="background-color: #0F1117;">
+            <main class="flex-1 relative overflow-y-auto focus:outline-none" style="background-color: #F8FAFC;">
                 <div class="py-6">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         @if(session('success'))
@@ -192,8 +192,8 @@
                 </div>
 
                 <!-- Copyright Footer -->
-                <div class="border-t px-6 py-3 text-center" style="border-color: #1A1D24;">
-                    <p class="text-s text-slate-500"> 
+                <div class="border-t px-6 py-3 text-center" style="border-color: #E2E8F0;">
+                    <p class="text-sm text-black opacity-40"> 
                         Developed and Maintained by <a href="https://falak-innovation.com" target="_blank" class="text-primary-500 hover:text-primary-400">Falak Innovation</a> 
                         © All Rights Reserved - Task Management.
                     </p>
