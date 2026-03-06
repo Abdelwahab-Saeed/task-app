@@ -376,8 +376,8 @@
 
                 <!-- Copyright Footer -->
                 <div class="border-t px-6 py-3 text-center border-soft">
-                    <p class="text-sm text-black opacity-40"> 
-                        Developed and Maintained by <a href="https://falak-innovation.com" target="_blank" class="text-primary-500 hover:text-primary-400">Falak Innovation</a> 
+                    <p class="text-sm text-black"> 
+                        Developed and Maintained by <a href="https://falak-innovation.com" target="_blank" class="text-indigo-500 hover:text-indigo-400">Falak Innovation</a> 
                         © All Rights Reserved - Task Management.
                     </p>
                 </div>
