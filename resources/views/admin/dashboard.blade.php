@@ -86,6 +86,7 @@
                 <thead>
                     <tr class="border-b border-subtle bg-slate-50/30">
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Task Info</th>
+                        <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Task Description</th>
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Project</th>
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider text-right">Status</th>
                     </tr>
@@ -128,6 +129,9 @@
                                         </span>
                                     </div>
                                 </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $task->description ?? 'No description' }}
                             </td>
                             <td class="px-6 py-4">
                                 @if($task->project)

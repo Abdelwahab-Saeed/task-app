@@ -94,49 +94,61 @@
                     @if($user->tasks->count() > 0)
                         <div class="space-y-3">
                             @foreach($user->tasks as $task)
-                                <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-slate-50 border border-transparent hover:border-soft"
-                                     x-data="{ 
-                                        status: '{{ $task->status }}',
-                                        updating: false,
-                                        updateStatus() {
-                                            this.updating = true;
-                                            fetch('{{ route('admin.tasks.update-status', $task) }}', {
-                                                method: 'PATCH',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                    'Accept': 'application/json'
-                                                },
-                                                body: JSON.stringify({ status: this.status })
-                                            })
-                                            .finally(() => this.updating = false);
-                                        }
-                                    }">
-                                    <div class="text-md font-medium text-black cursor-pointer hover:text-primary-600 transition-colors"
-                                         :class="{ 'line-through': status === 'completed' }"
-                                         @click="$dispatch('open-edit-modal', { 
-                                             url: '{{ route('admin.tasks.edit', $task) }}',
-                                             title: 'Edit Task: {{ $task->title }}'
-                                         })">
-                                        {{ $task->title }}
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <div class="relative inline-block">
-                                            <select x-model="status" 
-                                                    @change="updateStatus"
-                                                    :disabled="updating"
-                                                    class="block w-full rounded-full border-0 py-0.5 pl-3 pr-8 text-[10px] font-bold uppercase tracking-widest appearance-none focus:ring-1 focus:ring-inset transition-colors cursor-pointer"
-                                                    :class="{
-                                                        'bg-green-50 text-green-700 border border-green-100 focus:ring-green-500': status === 'completed',
-                                                        'bg-blue-50 text-blue-700 border border-blue-100 focus:ring-blue-500': status === 'in_progress',
-                                                        'bg-slate-50 text-black border border-subtle focus:ring-slate-500': status === 'pending',
-                                                        'opacity-50 cursor-wait': updating
-                                                    }">
-                                                <option value="pending">Pending</option>
-                                                <option value="in_progress">In Progress</option>
-                                                <option value="completed">Completed</option>
-                                            </select>
+                                <div class="border border-indigo-50 rounded-lg">
+                                    <div class="group flex items-center justify-between p-4 rounded-xl transition-all hover:bg-slate-50 border border-transparent hover:border-soft"
+                                        x-data="{ 
+                                            status: '{{ $task->status }}',
+                                            updating: false,
+                                            updateStatus() {
+                                                this.updating = true;
+                                                fetch('{{ route('admin.tasks.update-status', $task) }}', {
+                                                    method: 'PATCH',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                        'Accept': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({ status: this.status })
+                                                })
+                                                .finally(() => this.updating = false);
+                                            }
+                                        }">
+                                        <div class="text-md font-medium text-black cursor-pointer hover:text-primary-600 transition-colors"
+                                            :class="{ 'line-through': status === 'completed' }"
+                                            @click="$dispatch('open-edit-modal', { 
+                                                url: '{{ route('admin.tasks.edit', $task) }}',
+                                                title: 'Edit Task: {{ $task->title }}'
+                                            })">
+                                            {{ $task->title }}
                                         </div>
+                                        
+                                        <div class="flex items-center gap-4">
+                                            <div class="relative inline-block">
+                                                <select x-model="status" 
+                                                        @change="updateStatus"
+                                                        :disabled="updating"
+                                                        class="block w-full rounded-full border-0 py-0.5 pl-3 pr-8 text-[10px] font-bold uppercase tracking-widest appearance-none focus:ring-1 focus:ring-inset transition-colors cursor-pointer"
+                                                        :class="{
+                                                            'bg-green-50 text-green-700 border border-green-100 focus:ring-green-500': status === 'completed',
+                                                            'bg-blue-50 text-blue-700 border border-blue-100 focus:ring-blue-500': status === 'in_progress',
+                                                            'bg-slate-50 text-black border border-subtle focus:ring-slate-500': status === 'pending',
+                                                            'opacity-50 cursor-wait': updating
+                                                        }">
+                                                    <option value="pending">Pending</option>
+                                                    <option value="in_progress">In Progress</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                            </div>
+                                            <a href="{{ route('admin.tasks.show', $task) }}" class="group-hover:text-primary-600 transition-colors">
+                                                <svg class="w-4 h-4 text-black hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="text-sm text-black p-4">
+                                        {{ $task->description }}
                                     </div>
                                 </div>
                             @endforeach
