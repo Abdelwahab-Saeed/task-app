@@ -66,6 +66,7 @@
                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-black uppercase tracking-wider">Due Date</th>
                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-black uppercase tracking-wider">Status</th>
                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-black uppercase tracking-wider">Priority</th>
+                        <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-black uppercase tracking-wider">Dashboard</th>
                         <th scope="col" class="relative px-6 py-3"><span class="">Actions</span></th>
                     </tr>
                 </thead>
@@ -74,7 +75,9 @@
                         <tr class="hover:bg-slate-50 transition-colors"
                             x-data="{ 
                                 status: '{{ $task->status }}',
+                                isAdded: {{ $task->is_added ? 'true' : 'false' }},
                                 updating: false,
+                                updatingDashboard: false,
                                 updateStatus() {
                                     this.updating = true;
                                     fetch('{{ route('admin.tasks.update-status', $task) }}', {
@@ -94,6 +97,26 @@
                                     })
                                     .finally(() => {
                                         this.updating = false;
+                                    });
+                                },
+                                toggleDashboard() {
+                                    this.updatingDashboard = true;
+                                    fetch('{{ route('admin.tasks.toggle-added', $task) }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            this.isAdded = data.is_added;
+                                        }
+                                    })
+                                    .finally(() => {
+                                        this.updatingDashboard = false;
                                     });
                                 }
                             }">
@@ -152,6 +175,28 @@
                                     @endif">
                                     {{ ucfirst($task->priority) }}
                                 </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <button @click="toggleDashboard" 
+                                        :class="isAdded ? 'text-[#3FA9A6]' : 'text-slate-200'"
+                                        class="transition-all hover:scale-105" 
+                                        :title="isAdded ? 'Remove from Dashboard' : 'Add to Dashboard'"
+                                        :disabled="updatingDashboard">
+                                    <template x-if="!updatingDashboard">
+                                        <svg class="w-10 h-6" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="40" height="24" rx="12" fill="currentColor"/>
+                                            <circle :cx="isAdded ? 28 : 12" cy="12" r="8" fill="white" class="transition-all duration-200"/>
+                                        </svg>
+                                    </template>
+                                    <template x-if="updatingDashboard">
+                                        <div class="w-10 h-6 flex items-center justify-center">
+                                            <svg class="animate-spin h-4 w-4 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </template>
+                                </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end gap-2">

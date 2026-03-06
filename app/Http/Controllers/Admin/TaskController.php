@@ -60,6 +60,7 @@ class TaskController extends Controller
             'notes' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240', // 10MB max
             'reminder_date' => 'nullable|date|after:now',
+            'is_added' => 'nullable|boolean',
         ]);
 
         // Handle file upload
@@ -70,6 +71,7 @@ class TaskController extends Controller
         $validated['status'] = 'pending';
         $validated['priority'] = $validated['priority'] ?? 'medium';
         $validated['description'] = $validated['description'] ?? '';
+        $validated['is_added'] = $request->boolean('is_added');
         Task::create($validated);
 
         return redirect()->route('admin.tasks.index')->with('success', 'Task created successfully.');
@@ -103,6 +105,7 @@ class TaskController extends Controller
             'notes' => 'nullable|string',
             'attachment' => 'nullable|file|max:10240',
             'reminder_date' => 'nullable|date',
+            'is_added' => 'nullable|boolean',
         ]);
 
         // Handle file upload
@@ -114,6 +117,7 @@ class TaskController extends Controller
             $validated['attachment'] = $request->file('attachment')->store('task-attachments', 'public');
         }
 
+        $validated['is_added'] = $request->boolean('is_added');
         $task->update($validated);
 
         if ($request->ajax()) {
@@ -145,6 +149,17 @@ class TaskController extends Controller
             'success' => true,
             'message' => 'Status updated successfully',
             'status' => $task->status
+        ]);
+    }
+
+    public function toggleAdded(Request $request, Task $task)
+    {
+        $task->update(['is_added' => !$task->is_added]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dashboard status updated successfully',
+            'is_added' => $task->is_added
         ]);
     }
 }

@@ -78,8 +78,9 @@
 
     <!-- Recent Tasks Table -->
     <div class="mt-8 bg-white rounded-xl border border-subtle shadow-sm overflow-hidden">
-        <div class="px-6 py-4 border-b border-subtle bg-slate-50/50">
-            <h3 class="text-lg font-bold text-black">Recent Tasks</h3>
+        <div class="px-6 py-4 border-b border-subtle bg-slate-50/50 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-black">Dashboard Tasks</h3>
+            <a href="{{ route('admin.tasks.index') }}" class="text-sm font-medium text-[#3FA9A6] hover:underline">Manage All</a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -88,12 +89,42 @@
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Task Info</th>
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Task Description</th>
                         <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider">Project</th>
-                        <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider text-right">Status</th>
+                        <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider text-center">Status</th>
+                        <th class="px-6 py-4 text-xs font-bold text-black uppercase tracking-wider text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-subtle">
                     @forelse($recentTasks as $task)
-                        <tr class="hover:bg-slate-50/50 transition-colors" x-data="{ status: '{{ $task->status }}' }">
+                        <tr class="hover:bg-slate-50/50 transition-colors" 
+                            x-show="isAdded"
+                            x-transition:leave="transition ease-in duration-300"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            x-data="{ 
+                                status: '{{ $task->status }}',
+                                isAdded: {{ $task->is_added ? 'true' : 'false' }},
+                                updatingDashboard: false,
+                                toggleDashboard() {
+                                    this.updatingDashboard = true;
+                                    fetch('{{ route('admin.tasks.toggle-added', $task) }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            this.isAdded = data.is_added;
+                                        }
+                                    })
+                                    .finally(() => {
+                                        this.updatingDashboard = false;
+                                    });
+                                }
+                            }">
                             <td class="px-6 py-4">
                                 <div class="flex flex-col">
                                     <div class="flex items-center gap-2">
@@ -143,7 +174,7 @@
                                     <span class="text-xs text-black italic">No project</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest
                                     @if($task->status === 'completed') bg-green-50 text-green-700 border border-green-100
                                     @elseif($task->status === 'in_progress') bg-blue-50 text-blue-700 border border-blue-100
@@ -152,11 +183,34 @@
                                     {{ ucfirst(str_replace('_', ' ', $task->status)) }}
                                 </span>
                             </td>
+                            <td class="px-6 py-4 text-right">
+                                <button @click="toggleDashboard" 
+                                        class="transition-all hover:scale-105" 
+                                        :class="isAdded ? 'text-[#3FA9A6]' : 'text-slate-200'"
+                                        title="Remove from Dashboard"
+                                        :disabled="updatingDashboard">
+                                    <template x-if="!updatingDashboard">
+                                        <svg class="w-10 h-6" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="40" height="24" rx="12" fill="currentColor"/>
+                                            <circle :cx="isAdded ? 28 : 12" cy="12" r="8" fill="white" class="transition-all duration-200"/>
+                                        </svg>
+                                    </template>
+                                    <template x-if="updatingDashboard">
+                                        <div class="w-10 h-6 flex items-center justify-center">
+                                            <svg class="animate-spin h-4 w-4 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                    </template>
+                                </button>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-8 text-center">
-                                <p class="text-sm text-black font-medium italic">No recent tasks found.</p>
+                            <td colspan="5" class="px-6 py-8 text-center">
+                                <p class="text-sm text-black font-medium italic">No tasks added to dashboard.</p>
+                                <a href="{{ route('admin.tasks.index') }}" class="mt-2 inline-block text-xs text-[#3FA9A6] hover:underline">Add tasks from the task list</a>
                             </td>
                         </tr>
                     @endforelse

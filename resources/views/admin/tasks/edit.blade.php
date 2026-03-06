@@ -100,6 +100,18 @@
                             <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }} style="background-color: white; color: #000;">Completed</option>
                         </select>
                     </div>
+
+                    <!-- Add to Dashboard -->
+                    <div>
+                        <label for="is_added" class="block text-sm font-medium text-black">Show on Dashboard</label>
+                        <div class="mt-2 flex items-center">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" name="is_added" id="is_added" value="1" {{ old('is_added', $task->is_added) ? 'checked' : '' }} class="sr-only peer">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3FA9A6]"></div>
+                            </label>
+                            <span class="ms-3 text-sm font-medium text-black opacity-60">Add this task to main dashboard</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Description -->

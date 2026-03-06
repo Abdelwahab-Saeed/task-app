@@ -19,11 +19,13 @@ class Task extends Model
         'reminder_date',
         'project_id',
         'user_id',
+        'is_added',
     ];
 
     protected $casts = [
         'due_date' => 'date',
         'reminder_date' => 'date',
+        'is_added' => 'boolean',
     ];
 
     public function project()

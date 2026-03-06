@@ -27,6 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', App\Http\Middleware\
     // Tasks
     Route::resource('tasks', AdminTaskController::class);
     Route::patch('/tasks/{task}/status', [AdminTaskController::class, 'updateStatus'])->name('tasks.update-status');
+    Route::post('/tasks/{task}/toggle-added', [AdminTaskController::class, 'toggleAdded'])->name('tasks.toggle-added');
     
     // Users
     Route::resource('users', AdminUserController::class);
